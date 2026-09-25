@@ -15,10 +15,15 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/orders")
+@RequestMapping("/core")
 public class OrderController {
 
         private  final OrderServices orderServices;
+
+        @GetMapping("/helloOrders")
+        public  String helloOrders(){
+           return "Hello Orders Service";
+        }
 
         @GetMapping
         public ResponseEntity<List<OrderRequestDto>> getAllOrders(){
