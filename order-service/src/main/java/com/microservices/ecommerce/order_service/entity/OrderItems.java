@@ -12,9 +12,11 @@ import org.springframework.data.repository.cdi.Eager;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "order_items")
 public class OrderItems {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private  Long productId;

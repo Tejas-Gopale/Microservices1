@@ -1,5 +1,7 @@
 package com.microservices.ecommerce.inventory_service.controller;
 
+import com.microservices.ecommerce.inventory_service.clients.OrderFigenclients;
+import com.microservices.ecommerce.inventory_service.dto.OrderRequestDto;
 import com.microservices.ecommerce.inventory_service.dto.ProductDto;
 import com.microservices.ecommerce.inventory_service.entity.Product;
 import com.microservices.ecommerce.inventory_service.service.ProductService;
@@ -9,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -26,6 +25,14 @@ public class ProductController {
     private final ProductService productService;
     private final DiscoveryClient discoveryClient;
     private  final RestClient restClient;
+
+    private final OrderFigenclients orderFigenclients;
+
+    @GetMapping("/fetchOrdersByOpenFeign")
+    public  String fetchOrdersByOpenFeign(){
+        return  orderFigenclients.helloOrders();
+    }
+
 
      @GetMapping("/fetchOrders")
     public  String fetchOrders(){
@@ -47,5 +54,11 @@ public class ProductController {
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long id){
         ProductDto productDetilas = productService.getProductById(id);
         return  ResponseEntity.ok(productDetilas);
+    }
+
+    @PutMapping("reduce-stock")
+    public ResponseEntity<Double> reduceStock(@RequestBody OrderRequestDto orderRequestDto){
+       Double totalPrice= productService.reduceStock(orderRequestDto);
+        return ResponseEntity.ok(totalPrice);
     }
 }

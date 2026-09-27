@@ -1,24 +1,31 @@
 package com.microservices.ecommerce.order_service.controller;
 
+import com.microservices.ecommerce.order_service.client.InventoryOpenFIgnClient;
 import com.microservices.ecommerce.order_service.dto.OrderRequestDto;
 import com.microservices.ecommerce.order_service.service.OrderServices;
 import lombok.AllArgsConstructor;
 import org.hibernate.query.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.DatagramPacket;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/core")
+    @RequestMapping("/core")
 public class OrderController {
 
         private  final OrderServices orderServices;
+        private final InventoryOpenFIgnClient inventoryOpenFIgnClient;
+
+    @PostMapping("create-order")
+    public ResponseEntity<OrderRequestDto> createOrder(@RequestBody OrderRequestDto orderRequestDto){
+        OrderRequestDto orderRequestDto1 = orderServices.createOrder(orderRequestDto);
+        return  ResponseEntity.ok(orderRequestDto1);
+    }
+
 
         @GetMapping("/helloOrders")
         public  String helloOrders(){

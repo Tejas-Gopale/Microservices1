@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Table(name = "orders")
 public class Orders {
 
     @Id

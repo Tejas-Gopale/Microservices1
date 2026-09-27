@@ -6,18 +6,20 @@ spring:
     name: apigateway
   cloud:
     gateway:
-      routes:
-        - id: order-service
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/order/**
-            - Method=GET
+      server:
+        webflux:
+          routes:
+            - id: order-service
+              uri: lb://ORDER-SERVICE
+              predicates:
+                - Path=/order/**
+                - Method=GET,POST
 
-        - id: inventory-service
-          uri: lb://INVENTORY-SERVICE
-          predicates:
-            - Path=/inventory/**
-            - Method=GET
+            - id: inventory-service
+              uri: lb://INVENTORY-SERVICE
+              predicates:
+                - Path=/inventory/**
+                - Method=GET,PUT
 
 logging:
   level:
@@ -25,7 +27,6 @@ logging:
     org.springframework.http.server.reactive: DEBUG
     org.springframework.web.reactive: DEBUG
     reactor.netty.http.client: DEBUG
-
 
 eureka:
   client:
